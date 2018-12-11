@@ -23,6 +23,12 @@
     },
     {
       "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.NavigateHomeIntent"
+    },
+    {
+      "intent": "AMAZON.FallbackIntent"
     }
   ]
 }
