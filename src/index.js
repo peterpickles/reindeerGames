@@ -92,7 +92,7 @@ function onSessionStarted(sessionStartedRequest, session) {
  * Called when the user invokes the skill without specifying what they want.
  */
 function onLaunch(launchRequest, session, callback) {
-
+  getWelcomeResponse(callback)
 }
 
 /**
@@ -117,7 +117,7 @@ function onSessionEnded(sessionEndedRequest, session) {
 // ------- Skill specific logic -------
 
 function getWelcomeResponse(callback) {
-
+  var speechOutput = "Welcome to Reindeer games, I can "
 }
 
 function handleGetHelpRequest(intent, session, callback) {
