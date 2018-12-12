@@ -8,12 +8,12 @@ var reindeers = {
     "skill": "sewing"
   },
   "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+    "personality_trait": "is outgoing and loves people",
+    "skill": "does all kinds of dance"
   },
   "prancer": {
-    "personality_trait": "is a bit vain, though affecionate",
-    "skill": "prancing of course"
+    "personality_trait": "is a bit vain, though affectionate",
+    "skill": "good at prancing"
   },
   "vixen": {
     "personality_trait": "is slightly tricky",
@@ -25,7 +25,7 @@ var reindeers = {
   },
   "cupid": {
     "personality_trait": "is affectionate",
-    "skill": "bring people together"
+    "skill": "brings people together"
   },
   "donner": {
     "personality_trait": "is loud",
@@ -45,18 +45,15 @@ var reindeers = {
   }
 }
 
+
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
 exports.handler = function (event, context) {
   try {
     console.log("event.session.application.applicationId=" + event.session.application.applicationId);
 
-    /**
-     * Uncomment this if statement and populate with your skill's application ID to
-     * prevent someone else from configuring a skill that sends requests to this function.
-     */
 
-    if (event.session.application.applicationId !== "amzn-id") {
+    if (event.session.application.applicationId !== "amzn1.ask.skill.c711fb11-9f91-486c-8c40-5ff7c3d77654") {
       context.fail("Invalid Application ID");
     }
 
@@ -107,27 +104,21 @@ function onIntent(intentRequest, session, callback) {
   var intent = intentRequest.intent
   var intentName = intentRequest.intent.name;
 
-  //Logic when each intent is triggered
+  // dispatch custom intents to handlers here
   if (intentName == "ReindeerIntent") {
     handleReindeerResponse(intent, session, callback)
-  }
-  else if (intentName == "Amazon.YesIntent") {
+  } else if (intentName == "AMAZON.YesIntent") {
     handleYesResponse(intent, session, callback)
-  }
-  else if (intentName == "AMAZON.NoIntent") {
+  } else if (intentName == "AMAZON.NoIntent") {
     handleNoResponse(intent, session, callback)
-  }
-  else if (intentName == "AMAZON.HelpIntent") {
+  } else if (intentName == "AMAZON.HelpIntent") {
     handleGetHelpRequest(intent, session, callback)
-  }
-  else if (intentName == "AMAZON.StopIntent") {
+  } else if (intentName == "AMAZON.StopIntent") {
     handleFinishSessionRequest(intent, session, callback)
-  }
-  else if (intentName == "AMAZON.CancelIntent") {
+  } else if (intentName == "AMAZON.CancelIntent") {
     handleFinishSessionRequest(intent, session, callback)
-  }
-  else {
-    throw "invalid intent"
+  } else {
+    throw "Invalid intent"
   }
 }
 
@@ -142,43 +133,43 @@ function onSessionEnded(sessionEndedRequest, session) {
 // ------- Skill specific logic -------
 
 function getWelcomeResponse(callback) {
-  var speechOutput = "Welcome to Reindeer Facts! I can tell you about all the famous reindeer: " +
+  var speechOutput = "Welcome to Reindeer games, I can tell you about the famous reindeers: " +
     "Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive." +
     "I can only give facts about one at a time. Which reindeer are you interested in?"
 
   var reprompt = "Which reindeer are you interested in? You can find out about Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive."
 
-  //Cards support 
-  var header = "Reindeer Games!"
+  var header = "Reindeer Facts!"
 
   var shouldEndSession = false
 
-  //objects to hold stuff we need access to conviently
   var sessionAttributes = {
     "speechOutput": speechOutput,
     "repromptText": reprompt
   }
 
-  //To keep constantly keep all these attributes in memory
   callback(sessionAttributes, buildSpeechletResponse(header, speechOutput, reprompt, shouldEndSession))
+
 }
 
-handleReindeerResponse(intent, session, callback) {
+function handleReindeerResponse(intent, session, callback) {
   var reindeer = intent.slots.Reindeer.value.toLowerCase()
 
-  if (!reindeer[reindeer]) {
-    var speechOutput = "I am not familiar with this reindeer, maybe its a less famous cousin.  I only know Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive"
-    var repromptText = "Let me know another reindeer, I know you want to"
-  } else {
+  if (reindeers[reindeer]) {
     var personality_trait = reindeers[reindeer].personality_trait
     var skill = reindeers[reindeer].skill
-    var speechOutput = capitalizeFirst(reindeer) + " " + personality_trait + " and " + skill + ". Do you want to hear about more reindeer?"
-    var repropmtText = "Do you want to hear about more reindeer?"
+    var speechOutput = capitalizeFirst(reindeer) + " " + personality_trait + " and " + skill + ". Want to hear about another reindeer?"
+    var repromptText = "Do you want to hear about more reindeer?"
+    var header = capitalizeFirst(reindeer)
+  } else {
+    var speechOutput = "That reindeer isn't very famous. Try asking about another like Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive."
+    var repromptText = "Try asking about another reindeer"
+    var header = "Not Famous Enough"
   }
 
   var shouldEndSession = false
 
-  callback(session.attribute, buildSpeechletResponse(header, speechOutput, repromptText, shouldEndSession))
+  callback(session.attributes, buildSpeechletResponse(header, speechOutput, repromptText, shouldEndSession))
 }
 
 function handleYesResponse(intent, session, callback) {
@@ -191,22 +182,21 @@ function handleYesResponse(intent, session, callback) {
 
 function handleNoResponse(intent, session, callback) {
   handleFinishSessionRequest(intent, session, callback)
-
 }
 
 function handleGetHelpRequest(intent, session, callback) {
-
-  var shouldEndSession = false
   // Ensure that session.attributes has been initialized
   if (!session.attributes) {
     session.attributes = {};
   }
 
-  var speechOutput = "I can tell you facts about all the famous reindeer: " +
+  var speechOutput = "Here are all the ones that I know: " +
     "Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive." +
     " Which reindeer are you interested in? Remember, I can only give facts about one reindeer at a time."
 
   var repromptText = speechOutput
+
+  var shouldEndSession = false
 
   callback(session.attributes, buildSpeechletResponseWithoutCard(speechOutput, repromptText, shouldEndSession))
 
@@ -215,11 +205,11 @@ function handleGetHelpRequest(intent, session, callback) {
 function handleFinishSessionRequest(intent, session, callback) {
   // End the session with a "Good bye!" if the user wants to quit the game
   callback(session.attributes,
-    buildSpeechletResponseWithoutCard("See you next time! Thank you for using Reindeer Games", "", true));
+    buildSpeechletResponseWithoutCard("Good bye! Thank you for using Reindeer Facts!", "", true));
 }
 
 
-// ------- Helper functions to build responses for Alexa -------
+// ------- Helper functions to help clean up responses-------
 
 
 function buildSpeechletResponse(title, output, repromptText, shouldEndSession) {
@@ -267,7 +257,6 @@ function buildResponse(sessionAttributes, speechletResponse) {
   };
 }
 
-//Attribution: stackoverflow, because I still need more practice in data manipulation 
 function capitalizeFirst(s) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
