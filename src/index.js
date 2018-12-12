@@ -1,3 +1,7 @@
+/* ---- Attribution----
+@blondiebytes for starter code and basic setup for the facts game
+*/
+
 var reindeers = {
   "dasher": {
     "personality_trait": "loves to go fast",
