@@ -7,35 +7,38 @@ let reindeers = {
     "personality_trait": "is completely extroverted",
     "skill": "sewing"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "prancer": {
+    "personality_trait": "is a bit vain, though affecionate",
+    "skill": "prancing of course"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "vixen": {
+    "personality_trait": "is slightly tricky",
+    "skill": "good at magic"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "comet": {
+    "personality_trait": "is handsome and easy-going",
+    "skill": "good with kids"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "cupid": {
+    "personality_trait": "is affectionate",
+    "skill": "bring people together"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "donner": {
+    "personality_trait": "is loud",
+    "skill": "electrifies others"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "blitzen": {
+    "personality_trait": "is fast as a bolt",
+    "skill": "good at singing"
   },
-  "dancer": {
-    "personality_trait": "is completely extroverted",
-    "skill": "sewing"
+  "rudolph": {
+    "personality_trait": "is a little down on himself",
+    "skill": "has a nose that glows"
   },
-
+  "olive": {
+    "personality_trait": "admits when she's wrong",
+    "skill": "good at hide-and-go-seek"
+  }
 }
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
