@@ -4,3 +4,4 @@ ReindeerIntent Tell me some facts about {Reindeer}
 AMAZON.HelpIntent Tell me those reindeer names again
 AMAZON.HelpIntent Tell me the reindeer names
 AMAZON.helpIntent What are the reindeer names again
+AMAZON.helpIntent What are the reindeer names
