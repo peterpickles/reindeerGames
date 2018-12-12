@@ -1,4 +1,4 @@
-let reindeers = {
+var reindeers = {
   "dasher": {
     "personality_trait": "loves to go fast",
     "skill": "sewing"
@@ -103,21 +103,27 @@ function onIntent(intentRequest, session, callback) {
   var intent = intentRequest.intent
   var intentName = intentRequest.intent.name;
 
-  // dispatch custom intents to handlers here
+  //Logic when each intent is triggered
   if (intentName == "ReindeerIntent") {
     handleReindeerResponse(intent, session, callback)
-  } else if (intentName == "AMAZON.YesIntent") {
+  }
+  else if (intentName == "Amazon.YesIntent") {
     handleYesResponse(intent, session, callback)
-  } else if (intentName == "AMAZON.NoIntent") {
+  }
+  else if (intentName == "AMAZON.NoIntent") {
     handleNoResponse(intent, session, callback)
-  } else if (intentName == "AMAZON.HelpIntent") {
+  }
+  else if (intentName == "AMAZON.HelpIntent") {
     handleGetHelpRequest(intent, session, callback)
-  } else if (intentName == "AMAZON.StopIntent") {
+  }
+  else if (intentName == "AMAZON.StopIntent") {
     handleFinishSessionRequest(intent, session, callback)
-  } else if (intentName == "AMAZON.CancelIntent") {
+  }
+  else if (intentName == "AMAZON.CancelIntent") {
     handleFinishSessionRequest(intent, session, callback)
-  } else {
-    throw "Invalid intent"
+  }
+  else {
+    throw "invalid intent"
   }
 }
 
@@ -138,37 +144,37 @@ function getWelcomeResponse(callback) {
 
   var reprompt = "Which reindeer are you interested in? You can find out about Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive."
 
-  var header = "Reindeer Facts!"
+  //Cards support 
+  var header = "Reindeer Games!"
 
   var shouldEndSession = false
 
+  //objects to hold stuff we need access to conviently
   var sessionAttributes = {
     "speechOutput": speechOutput,
     "repromptText": reprompt
   }
 
+  //To keep constantly keep all these attributes in memory
   callback(sessionAttributes, buildSpeechletResponse(header, speechOutput, reprompt, shouldEndSession))
-
 }
 
-function handleReindeerResponse(intent, session, callback) {
+handleReindeerResponse(intent, session, callback) {
   var reindeer = intent.slots.Reindeer.value.toLowerCase()
 
-  if (!reindeers[reindeer]) {
-    var speechOutput = "That reindeer isn't very famous. Try asking about another like Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive."
-    var repromptText = "Try asking about another reindeer"
-    var header = "Not Famous Enough"
+  if (!reindeer[reindeer]) {
+    var speechOutput = "I am not familiar with this reindeer, maybe its a less famous cousin.  I only know Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Blitzen, Rudolph, and Olive"
+    var repromptText = "Let me know another reindeer, I know you want to"
   } else {
     var personality_trait = reindeers[reindeer].personality_trait
     var skill = reindeers[reindeer].skill
     var speechOutput = capitalizeFirst(reindeer) + " " + personality_trait + " and " + skill + ". Do you want to hear about more reindeer?"
-    var repromptText = "Do you want to hear about more reindeer?"
-    var header = capitalizeFirst(reindeer)
+    var repropmtText = "Do you want to hear about more reindeer?"
   }
 
   var shouldEndSession = false
 
-  callback(session.attributes, buildSpeechletResponse(header, speechOutput, repromptText, shouldEndSession))
+  callback(session.attribute, buildSpeechletResponse(header, speechOutput, repromptText, shouldEndSession))
 }
 
 function handleYesResponse(intent, session, callback) {
@@ -181,9 +187,12 @@ function handleYesResponse(intent, session, callback) {
 
 function handleNoResponse(intent, session, callback) {
   handleFinishSessionRequest(intent, session, callback)
+
 }
 
 function handleGetHelpRequest(intent, session, callback) {
+
+  var shouldEndSession = false
   // Ensure that session.attributes has been initialized
   if (!session.attributes) {
     session.attributes = {};
@@ -195,8 +204,6 @@ function handleGetHelpRequest(intent, session, callback) {
 
   var repromptText = speechOutput
 
-  var shouldEndSession = false
-
   callback(session.attributes, buildSpeechletResponseWithoutCard(speechOutput, repromptText, shouldEndSession))
 
 }
@@ -204,7 +211,7 @@ function handleGetHelpRequest(intent, session, callback) {
 function handleFinishSessionRequest(intent, session, callback) {
   // End the session with a "Good bye!" if the user wants to quit the game
   callback(session.attributes,
-    buildSpeechletResponseWithoutCard("Good bye! Thank you for using Reindeer Facts!", "", true));
+    buildSpeechletResponseWithoutCard("See you next time! Thank you for using Reindeer Games", "", true));
 }
 
 
@@ -256,6 +263,7 @@ function buildResponse(sessionAttributes, speechletResponse) {
   };
 }
 
+//Attribution: stackoverflow, because I still need more practice in data manipulation 
 function capitalizeFirst(s) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
