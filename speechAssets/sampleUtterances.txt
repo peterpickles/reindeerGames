@@ -2,6 +2,7 @@ ReindeerIntent {Reindeer}
 ReindeerIntent tell me about {Reindeer}
 ReindeerIntent tell me some facts about {Reindeer}
 Alexa ask reindeer games about prancer
+Alexa ask reindeer games to tell me some facts about rudolph
 AMAZON.HelpIntent tell me those reindeer names again
 AMAZON.HelpIntent tell me the reindeer names
 AMAZON.helpIntent what are the reindeer names again
